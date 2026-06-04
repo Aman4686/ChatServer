@@ -1,4 +1,4 @@
-package com.example.chat.services;
+package com.example.chat.domain.services;
 
 import com.example.chat.domain.dto.UserDto;
 
