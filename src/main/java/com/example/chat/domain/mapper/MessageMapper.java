@@ -8,9 +8,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface MessageMapper {
 
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "text", target = "content")
+    @Mapping(source = "user.name", target = "sender")
     MessageDto toDto(MessageEntity entity);
 
-    @Mapping(source = "userId", target = "user.id")
+    @Mapping(source = "content", target = "text")
     MessageEntity toEntity(MessageDto dto);
 }

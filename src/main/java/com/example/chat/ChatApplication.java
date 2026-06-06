@@ -8,8 +8,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SpringBootApplication
 public class ChatApplication {
 
+    public static int count = 0;
+
 	public static void main(String[] args) {
-        SpringApplication.run(ChatApplication.class, args);
+       SpringApplication.run(ChatApplication.class, args);
     }
 
 }

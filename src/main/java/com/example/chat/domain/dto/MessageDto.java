@@ -1,17 +1,20 @@
 package com.example.chat.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.*;
 
+@Getter
+@Setter
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MessageDto {
-    private String isbn;
-    private String text;
-    private String title;
-    private Long userId;
+    public enum Type { CHAT, JOIN, LEAVE }
+
+    private Type type;
+    private String content;
+    private String sender;
 }

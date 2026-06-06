@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "messages")
 public class MessageEntity {
     @Id
-    private String isbn;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     private String text;
-    private String title;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
 }
