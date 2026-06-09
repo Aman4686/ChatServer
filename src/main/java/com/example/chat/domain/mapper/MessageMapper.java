@@ -5,6 +5,8 @@ import com.example.chat.domain.entity.MessageEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface MessageMapper {
 
@@ -14,4 +16,6 @@ public interface MessageMapper {
 
     @Mapping(source = "content", target = "text")
     MessageEntity toEntity(MessageDto dto);
+
+    List<MessageDto> toDtoList(List<MessageEntity> entities);
 }

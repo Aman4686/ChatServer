@@ -1,5 +1,6 @@
 package com.example.chat.domain.entity;
 
+import com.example.chat.domain.MessageType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,9 @@ public class MessageEntity {
     private String id;
 
     private String text;
+
+    @Enumerated(EnumType.STRING)
+    private MessageType type;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -9,6 +9,8 @@ import com.example.chat.repository.MessageRepository;
 import com.example.chat.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -30,9 +32,15 @@ public class MessageServiceImpl implements MessageService {
 
         MessageEntity entity = MessageEntity.builder()
                 .text(dto.getContent())
+                .type(dto.getType())
                 .user(user)
                 .build();
 
         return messageMapper.toDto(messageRepository.save(entity));
+    }
+
+    @Override
+    public List<MessageDto> getMessages() {
+        return messageMapper.toDtoList(messageRepository.findAll());
     }
 }

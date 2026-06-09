@@ -1,5 +1,6 @@
-package com.example.chat.controllers;
+package com.example.chat.webSocket;
 
+import com.example.chat.domain.MessageType;
 import com.example.chat.domain.dto.MessageDto;
 import com.example.chat.domain.services.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,13 +38,13 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         log.info("handleTextMessage {}", message.getPayload());
         MessageDto messageDto = objectMapper.readValue(message.getPayload(), MessageDto.class);
 
-        if (messageDto.getType() == MessageDto.Type.JOIN) {
+        if (messageDto.getType() == MessageType.JOIN && messageDto.getSender() != null) {
             session.getAttributes().put("username", messageDto.getSender());
         }
 
-//        if (messageDto.getType() == MessageDto.Type.CHAT) {
-//            messageDto = messageService.save(messageDto);
-//        }
+        if (messageDto.getType() == MessageType.CHAT) {
+            messageDto = messageService.save(messageDto);
+        }
 
         broadcast(objectMapper.writeValueAsString(messageDto));
     }
@@ -56,7 +57,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         String username = (String) session.getAttributes().get("username");
         if (username != null) {
             MessageDto leave = MessageDto.builder()
-                    .type(MessageDto.Type.LEAVE)
+                    .type(MessageType.LEAVE)
                     .sender(username)
                     .content(username + " left the chat")
                     .build();
@@ -67,8 +68,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private void broadcast(String payload) throws Exception {
         TextMessage message = new TextMessage(payload);
         for (WebSocketSession s : sessions) {
-            if (s.isOpen()) {
-                s.sendMessage(message);
+            synchronized (s) {
+                if (s.isOpen()) {
+                    s.sendMessage(message);
+                }
             }
         }
     }
