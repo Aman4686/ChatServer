@@ -34,16 +34,16 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        log.info("handleTextMessage {}", message);
+        log.info("handleTextMessage {}", message.getPayload());
         MessageDto messageDto = objectMapper.readValue(message.getPayload(), MessageDto.class);
 
         if (messageDto.getType() == MessageDto.Type.JOIN) {
             session.getAttributes().put("username", messageDto.getSender());
         }
 
-        if (messageDto.getType() == MessageDto.Type.CHAT) {
-            messageDto = messageService.save(messageDto);
-        }
+//        if (messageDto.getType() == MessageDto.Type.CHAT) {
+//            messageDto = messageService.save(messageDto);
+//        }
 
         broadcast(objectMapper.writeValueAsString(messageDto));
     }
