@@ -12,6 +12,7 @@ public interface MessageMapper {
 
     @Mapping(source = "text", target = "content")
     @Mapping(source = "user.name", target = "sender")
+    @Mapping(source = "createdAt", target = "createdAt")
     MessageDto toDto(MessageEntity entity);
 
     @Mapping(source = "content", target = "text")

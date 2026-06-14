@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -26,4 +28,8 @@ public class MessageEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Instant createdAt;
 }

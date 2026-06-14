@@ -41,6 +41,6 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<MessageDto> getMessages() {
-        return messageMapper.toDtoList(messageRepository.findAll());
+        return messageMapper.toDtoList(messageRepository.findAllByOrderByCreatedAtAsc());
     }
 }
