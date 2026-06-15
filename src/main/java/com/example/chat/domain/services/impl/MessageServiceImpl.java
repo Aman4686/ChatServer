@@ -7,7 +7,9 @@ import com.example.chat.domain.mapper.MessageMapper;
 import com.example.chat.domain.services.MessageService;
 import com.example.chat.repository.MessageRepository;
 import com.example.chat.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public MessageDto save(MessageDto dto) {
         UserEntity user = userRepository.findByName(dto.getSender())
-                .orElseGet(() -> userRepository.save(UserEntity.builder().name(dto.getSender()).build()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + dto.getSender()));
 
         MessageEntity entity = MessageEntity.builder()
                 .text(dto.getContent())

@@ -5,7 +5,9 @@ import com.example.chat.domain.entity.UserEntity;
 import com.example.chat.domain.mapper.UserMapper;
 import com.example.chat.repository.UserRepository;
 import com.example.chat.domain.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,9 +21,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserDto user) {
-        UserEntity entity = mapper.toEntity(user);
-        UserEntity saved = userRepository.save(entity);
-        return mapper.toDto(saved);
+    public UserDto getOrCreateUser(UserDto user) {
+        return userRepository.findByName(user.getName())
+                .map(mapper::toDto)
+                .orElseGet(() -> {
+                    UserEntity saved = userRepository.save(mapper.toEntity(user));
+                    return mapper.toDto(saved);
+                });
     }
 }

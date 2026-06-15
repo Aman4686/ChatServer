@@ -4,6 +4,5 @@ import com.example.chat.domain.dto.UserDto;
 
 public interface UserService {
 
-    UserDto createUser(UserDto user);
-
+    UserDto getOrCreateUser(UserDto user);
 }
