@@ -1,4 +1,4 @@
-package com.example.chat.controllers;
+package com.example.chat.presentation.controllers;
 
 import com.example.chat.domain.dto.UserDto;
 import com.example.chat.domain.services.UserService;

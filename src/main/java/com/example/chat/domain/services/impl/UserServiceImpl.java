@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getOrCreateUser(UserDto user) {
-        return userRepository.findByName(user.getName())
+        return userRepository.findById(user.getId())
                 .map(mapper::toDto)
                 .orElseGet(() -> {
                     UserEntity saved = userRepository.save(mapper.toEntity(user));

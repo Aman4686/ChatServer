@@ -1,4 +1,4 @@
-package com.example.chat.controllers;
+package com.example.chat.presentation.controllers;
 
 import com.example.chat.domain.dto.MessageDto;
 import com.example.chat.domain.services.MessageService;
@@ -14,7 +14,6 @@ import java.util.List;
 public class MessageController {
 
     private final MessageService messageService;
-
 
     public MessageController(MessageService messageService) {
         this.messageService = messageService;

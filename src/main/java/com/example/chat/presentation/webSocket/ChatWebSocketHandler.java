@@ -1,11 +1,9 @@
-package com.example.chat.webSocket;
+package com.example.chat.presentation.webSocket;
 
 import com.example.chat.domain.MessageType;
 import com.example.chat.domain.dto.MessageDto;
 import com.example.chat.domain.services.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,8 +40,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         log.info("handleTextMessage {}", message.getPayload());
         MessageDto messageDto = objectMapper.readValue(message.getPayload(), MessageDto.class);
 
-        if (messageDto.getType() == MessageType.JOIN && messageDto.getSender() != null) {
-            session.getAttributes().put("username", messageDto.getSender());
+        String userName = messageDto.getUser().getName();
+
+        if (messageDto.getType() == MessageType.JOIN && userName != null) {
+            session.getAttributes().put("userName", userName);
         }
 
         if (messageDto.getType() == MessageType.CHAT) {
@@ -58,11 +58,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         log.info("afterConnectionClosed");
         sessions.remove(session);
 
-        String username = (String) session.getAttributes().get("username");
+        String username = (String) session.getAttributes().get("userName");
+
         if (username != null) {
             MessageDto leave = MessageDto.builder()
                     .type(MessageType.LEAVE)
-                    .sender(username)
                     .content(username + " left the chat")
                     .build();
             broadcast(objectMapper.writeValueAsString(leave));

@@ -29,8 +29,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageDto save(MessageDto dto) {
-        UserEntity user = userRepository.findByName(dto.getSender())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + dto.getSender()));
+        UserEntity user = userRepository.findById(dto.getUser().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + dto.getUser().getName()));
 
         MessageEntity entity = MessageEntity.builder()
                 .text(dto.getContent())

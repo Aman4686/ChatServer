@@ -3,6 +3,7 @@ package com.example.chat.domain.dto;
 import com.example.chat.domain.MessageType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 import java.time.Instant;
@@ -19,6 +20,8 @@ public class MessageDto {
     private String id;
     private MessageType type;
     private String content;
-    private String sender;
+
+    private UserDto user;
+
     private Instant createdAt;
 }
